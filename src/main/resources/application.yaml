@@ -1,0 +1,50 @@
+server:
+  port: 8082
+
+logging:
+  level:
+    root: ERROR
+    org.springframework.web: ERROR
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.web.client.RestTemplate: TRACE
+
+spring:
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          forgerock:
+            client-id: oidc-demoapp-c2id
+            client-secret: MG_TNT2ver-SylNat-_VeMmd-4m0Waba
+            client-authentication-method: basic
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8082/login/oauth2/code/forgerock
+            scope:
+              - openid
+              - profile
+          gluu:
+            client-id: oidc-demoapp-c2id
+            client-secret: MG_TNT2ver-SylNat-_VeMmd-4m0Waba
+            client-authentication-method: basic
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8082/login/oauth2/code/gluu
+            scope:
+              - openid
+              - profile    
+        provider:
+          forgerock:
+            authorization-uri: https://default.iam.example.com/am/oauth2/authorize
+            token-uri: https://default.iam.example.com/am/oauth2/access_token
+            user-info-uri: https://default.iam.example.com/am/oauth2/userinfo
+            user-name-attribute: sub
+            jwk-set-uri: https://default.iam.example.com/am/oauth2/connect/jwk_uri
+          gluu: 
+  #          issuer-uri: https://default.iam.example.com/am/oauth2
+            authorization-uri: https://default.iam.example.com/am/oauth2/authorize
+            token-uri: https://default.iam.example.com/am/oauth2/access_token
+            user-info-uri: https://default.iam.example.com/am/oauth2/userinfo
+            user-name-attribute: sub
+            jwk-set-uri: https://default.iam.example.com/am/oauth2/connect/jwk_uri
