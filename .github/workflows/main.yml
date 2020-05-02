@@ -25,5 +25,5 @@ jobs:
         docker tag oidc-demoapp-spring ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:latest
     - name: Push
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/oidc-demoapp-spring:${{ github.sha }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/oidc-demoapp-spring:latest
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:${{ github.sha }}
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:latest
