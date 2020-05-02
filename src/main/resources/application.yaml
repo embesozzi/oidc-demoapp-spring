@@ -16,35 +16,20 @@ spring:
     oauth2:
       client:
         registration:
-          forgerock:
-            client-id: oidc-demoapp-c2id
-            client-secret: MG_TNT2ver-SylNat-_VeMmd-4m0Waba
-            client-authentication-method: basic
-            authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8082/login/oauth2/code/forgerock
-            scope:
-              - openid
-              - profile
           gluu:
-            client-id: oidc-demoapp-c2id
-            client-secret: MG_TNT2ver-SylNat-_VeMmd-4m0Waba
+            client-id: f88d166f-034d-4349-9807-f3b09e8e63b0
+            client-secret: password
             client-authentication-method: basic
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8082/login/oauth2/code/gluu
             scope:
               - openid
-              - profile    
-        provider:
-          forgerock:
-            authorization-uri: https://default.iam.example.com/am/oauth2/authorize
-            token-uri: https://default.iam.example.com/am/oauth2/access_token
-            user-info-uri: https://default.iam.example.com/am/oauth2/userinfo
-            user-name-attribute: sub
-            jwk-set-uri: https://default.iam.example.com/am/oauth2/connect/jwk_uri
+              - profile
+        provider:      
           gluu: 
-  #          issuer-uri: https://default.iam.example.com/am/oauth2
-            authorization-uri: https://default.iam.example.com/am/oauth2/authorize
-            token-uri: https://default.iam.example.com/am/oauth2/access_token
-            user-info-uri: https://default.iam.example.com/am/oauth2/userinfo
-            user-name-attribute: sub
-            jwk-set-uri: https://default.iam.example.com/am/oauth2/connect/jwk_uri
+            issuer-uri: https://gluu.hlgv.net
+#            authorization-uri: https://gluu.hlgv.net/oauth2/restv1/authorize
+#            token-uri: https://gluu.hlgv.net/oauth2/restv1/token
+#            user-info-uri: https://gluu.hlgv.net/oauth2/restv1/userinfo     
+#            user-name-attribute: sub
+#            jwk-set-uri: https://gluu.hlgv.net/oxauth/restv1/token'

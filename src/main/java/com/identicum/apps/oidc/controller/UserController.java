@@ -19,24 +19,38 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author mbesozzi
  */
-// @Controller
 @RestController
-// @RequestMapping("/")
 public class UserController {
 
     @GetMapping("/")
     public ResponseEntity<Map<String,Object>> index(@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient,
 						@AuthenticationPrincipal OAuth2User oauth2User) {
 		Map<String,Object> info= new HashMap<>();
-        info.put("attributes", oauth2User.getAttributes());
-        info.put("access_token", authorizedClient.getAccessToken());
-        info.put("client", authorizedClient.getClientRegistration());
+        info.put("user-attributes", oauth2User.getAttributes());
+        info.put("client-access_token", authorizedClient.getAccessToken());
+        info.put("client-access_token", authorizedClient.getRefreshToken());
+        info.put("client-registration", authorizedClient.getClientRegistration());
+        /**
+         if (token.getPrincipal() instanceof OidcUser)
+         {
+            OidcUser principal = ((OidcUser) token.getPrincipal());
+            info.put("user-claims",principal.getClaims());
+            info.put("user-idToken", principal.getIdToken());
+         }
+          */
         return ResponseEntity.ok(info);
 	}
 
 	@GetMapping("/me")
-	public ResponseEntity<OAuth2AuthenticationToken> me(OAuth2AuthenticationToken token) {
-		return ResponseEntity.ok(token);
+	public ResponseEntity<Map<String,Object>> me(OAuth2AuthenticationToken token) {
+        Map<String,Object> info = new HashMap<>();
+         if (token.getPrincipal() instanceof OidcUser)
+         {
+            OidcUser principal = ((OidcUser) token.getPrincipal());
+            info.put("claims",principal.getClaims());
+            info.put("idToken", principal.getIdToken());
+         }
+        return ResponseEntity.ok(info);
 	}
 
     @GetMapping("/me/claims")
