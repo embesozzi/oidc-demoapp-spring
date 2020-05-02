@@ -1,12 +1,15 @@
-name: OIDC Demo Spring APP CI/CD
+name: OIDC Demo Spring CI/CD
 
 on:
-  push:
-    branches:
-    - master
-  pull_request:
-    branches:
-      - master
+#  push:
+#    branches:
+#    - master
+#  pull_request:
+#    branches:
+#      - master
+  create:
+    tags:
+      - '*'
   repository_dispatch:
     types: build-image
 
@@ -15,15 +18,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Docker login
+    - name: Docker Hub login
       run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
-    - name: Build
+    - name: Get the version from TAG
+      id: get_version
+      run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+    - name: Build image
       run: docker build -t oidc-demoapp-spring .
     - name: Tags
       run: |
-        docker tag oidc-demoapp-spring ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:${{ github.sha }}
-        docker tag oidc-demoapp-spring ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:latest
-    - name: Push
+         docker tag oidc-demoapp-spring ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:${{ steps.get_version.outputs.VERSION }}
+#        docker tag oidc-demoapp-spring ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:${{ github.sha }}
+#        docker tag oidc-demoapp-spring ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:latest
+    - name: Push to Docker Hub
       run: |
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:${{ github.sha }}
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:latest
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:${{ steps.get_version.outputs.VERSION }}
+#        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:latest
