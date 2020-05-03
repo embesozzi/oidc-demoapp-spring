@@ -20,17 +20,17 @@ jobs:
     - uses: actions/checkout@v1
     - name: Docker Hub login
       run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
-    - name: Get the version from TAG
-      id: get_version
-      run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+    - name: Get the version number from TAG
+      id: get_version_number
+      run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3 | cut -d / -f 3 | sed -e 's/^v//')     
     - name: Build image
       run: docker build -t oidc-demoapp-spring .
     - name: Tags
       run: |
-         docker tag oidc-demoapp-spring ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:${{ steps.get_version.outputs.VERSION }}
+         docker tag oidc-demoapp-spring ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:${{ steps.get_version_number.outputs.VERSION }}      
 #        docker tag oidc-demoapp-spring ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:${{ github.sha }}
 #        docker tag oidc-demoapp-spring ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:latest
     - name: Push to Docker Hub
       run: |
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:${{ steps.get_version.outputs.VERSION }}
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:${{ steps.get_version_number.outputs.VERSION }}
 #        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/oidc-demoapp-spring:latest
