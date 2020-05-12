@@ -18,6 +18,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Application {
 
+
+	
 	@PostConstruct
 	public void skipSSLValidation(){	
 		javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier(){
